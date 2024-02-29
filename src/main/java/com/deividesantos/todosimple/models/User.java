@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -74,7 +75,8 @@ public class User {
         return result;
     }
 
-//private List<Task> tasks=new ArrayList<Task>();
+@OneToMany(mappedBy = "user")
+private List<Task> tasks=new ArrayList<Task>();
 
 
 
