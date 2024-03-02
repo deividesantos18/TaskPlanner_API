@@ -1,7 +1,6 @@
-package com.deividesantos.todosimple.controllers;
+package com.deividesantos.todosimple.services;
 
 import com.deividesantos.todosimple.models.User;
-import com.deividesantos.todosimple.repositories.TaskRepository;
 import com.deividesantos.todosimple.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,6 @@ public class UserService {
     @Autowired
     private UserRepository objUserRepository;
 
-    @Autowired
-    private TaskRepository objTaskRepository;
-
-
     public User findbyid(Long id){
         Optional<User> objuseroptional=this.objUserRepository.findById(id);
         return objuseroptional.orElseThrow(()-> new RuntimeException("Usuario não encontrado! id:"
@@ -31,7 +26,6 @@ public class UserService {
     public User createUser(User objuser){
         objuser.setId(null);
         objuser = this.objUserRepository.save(objuser);
-        this.objTaskRepository.saveAll(objuser.getTasks());
         return objuser;
 
     }
