@@ -2,6 +2,7 @@ package com.deividesantos.todosimple.controllers;
 
 import com.deividesantos.todosimple.models.Task;
 import com.deividesantos.todosimple.services.TaskService;
+import com.deividesantos.todosimple.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +21,25 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Task> buscartasks(@PathVariable Long id){
         Task obj = this.taskService.findbyid(id);
         return ResponseEntity.ok(obj);
     }
 
-    @GetMapping("/user/userid")
+    @GetMapping("/user/{userid}")
     public ResponseEntity<List<Task>> findAllByUserid(@PathVariable Long userid){
-        var obj = this.taskService.fidAllByUserid(userid);
+        this.userService.findbyid(userid);
+        List<Task> obj = this.taskService.fidAllByUserid(userid);
         return ResponseEntity.ok().body(obj);
     }
 
 
     @PostMapping
+    @Validated
     public ResponseEntity<Void> enviartasks(@RequestBody@Valid Task obj){
         this.taskService.create(obj);
         URI uri= ServletUriComponentsBuilder.fromCurrentRequest()
@@ -42,6 +48,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
+    @Validated
     public ResponseEntity<Void> updateTasks(@PathVariable Long id,@RequestBody@Valid Task obj){
         obj.setId(id);
         this.taskService.update(obj);
@@ -54,8 +61,6 @@ public class TaskController {
         this.taskService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-
 
 
 

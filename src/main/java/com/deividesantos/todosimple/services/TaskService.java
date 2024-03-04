@@ -27,13 +27,13 @@ public class TaskService {
 
 
     public List<Task> fidAllByUserid(Long userid){
-        var tasks= this.taskRepository.findByUser_id(userid);
+        List<Task> tasks= this.taskRepository.findByUser_id(userid);
         return tasks;
     }
 
     @Transactional
     public Task create(Task obj) {
-        User user = userService.findbyid(obj.getUser().getId());
+        User user = this.userService.findbyid(obj.getUser().getId());
         obj.setId(null);
         obj.setUser(user);
         obj = this.taskRepository.save(obj);
