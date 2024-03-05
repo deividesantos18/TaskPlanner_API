@@ -1,19 +1,15 @@
 package com.deividesantos.todosimple.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @Entity
 @Table(name=User.TABLE_NAME)
@@ -21,6 +17,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of="id")
 public class User {
     public static final String TABLE_NAME="user";
     public interface CreatUser{};
@@ -44,45 +41,8 @@ public class User {
     @Size(groups = {CreatUser.class,UpdateUser.class},min=8,max=60)
     private String password;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-
-        if(obj==null)
-            return false;
-
-        if (!(obj instanceof User user))
-            return false;
-
-        User other= (User) obj;
-        if(this.id==null)
-            if(other.id!=null)
-                return false;
-
-                else if(!this.id.equals(other.id))
-                    return false;
-                return Objects.equals(this.id,other.id)&&
-                        Objects.equals(this.username,other.username) &&
-                        Objects.equals(this.password,other.password);
-
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime =31;
-        int result =1;
-        result = prime* result +((this.id==null)? 0:this.id.hashCode());
-        return result;
-    }
-
-@OneToMany(mappedBy = "user")
-private List<Task> tasks=new ArrayList<Task>();
-
-    @JsonIgnore
-public List<Task> getTasks(){
-    return  this.tasks;
-}
-
+    @OneToMany(mappedBy = "user")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Task> tasks=new ArrayList<Task>();
 
 }
