@@ -3,6 +3,8 @@ package com.deividesantos.todosimple.services;
 import com.deividesantos.todosimple.models.Task;
 import com.deividesantos.todosimple.models.User;
 import com.deividesantos.todosimple.repositories.TaskRepository;
+import com.deividesantos.todosimple.services.exception.DataBindingViolationException;
+import com.deividesantos.todosimple.services.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class TaskService {
 
     public Task findbyid(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException("Task não encontrada ! id:" + id +
+        return task.orElseThrow(() -> new ObjectNotFoundException("Task não encontrada ! id:" + id +
                 "Tipo" + Task.class.getName()));
     }
 
@@ -53,7 +55,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel deletar tarefa");
+            throw new DataBindingViolationException("Não é possivel deletar tarefa");
         }
 
     }

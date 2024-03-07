@@ -2,6 +2,8 @@ package com.deividesantos.todosimple.services;
 
 import com.deividesantos.todosimple.models.User;
 import com.deividesantos.todosimple.repositories.UserRepository;
+import com.deividesantos.todosimple.services.exception.DataBindingViolationException;
+import com.deividesantos.todosimple.services.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class UserService {
 
     public User findbyid(Long id){
         Optional<User> objuseroptional=this.objUserRepository.findById(id);
-        return objuseroptional.orElseThrow(()-> new RuntimeException("Usuario não encontrado! id:"
+        return objuseroptional.orElseThrow(()-> new ObjectNotFoundException("Usuario não encontrado! id:"
         +id+",Tipo"+User.class.getName()
         ));
     }
@@ -46,7 +48,7 @@ public class UserService {
         try{
          this.objUserRepository.deleteById(id);
         }catch (Exception e){
-           throw new RuntimeException("Não é possivel deletar usuario");
+           throw new DataBindingViolationException("Não é possivel deletar usuario");
         }
 
 
