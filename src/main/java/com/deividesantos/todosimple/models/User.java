@@ -1,5 +1,6 @@
 package com.deividesantos.todosimple.models;
 
+import com.deividesantos.todosimple.models.Enums.ProfileEnums;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,8 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 
 @Entity
@@ -18,10 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")
-public class User {
-    public static final String TABLE_NAME="user";
-    public interface CreatUser{};
-    public interface  UpdateUser{};
+public class User{
+public static final String TABLE_NAME="user";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +28,23 @@ public class User {
     private Long id;
 
     @Column(name = "username",length = 100,nullable = false,unique = true)
-    @NotNull(groups = CreatUser.class)
-    @NotEmpty(groups = CreatUser.class)
-    @Size(groups = CreatUser.class,min=2,max=100)
+    @NotNull
+    @NotEmpty
+    @Size(min=2,max=100)
     private String username;
 
     @JsonProperty(access= JsonProperty.Access.WRITE_ONLY)
     @Column(name="password",length = 60,nullable = false)
-    @NotNull(groups = {CreatUser.class,UpdateUser.class})
-    @NotEmpty(groups={CreatUser.class,UpdateUser.class})
-    @Size(groups = {CreatUser.class,UpdateUser.class},min=8,max=60)
+    @NotNull
+    @NotEmpty
+    @Size(min=8,max=60)
     private String password;
 
     @OneToMany(mappedBy = "user")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Task> tasks=new ArrayList<Task>();
+
+    @Column(name="role",nullable = false)
+    private ProfileEnums role;
 
 }
