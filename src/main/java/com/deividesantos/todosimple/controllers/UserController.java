@@ -40,7 +40,6 @@ public class UserController {
     }
 
     @PostMapping
-
     public ResponseEntity<Void> create(@RequestBody @Valid UserCreateDTO objdto) {
         User user = this.userService.fromDto(objdto);
         User newuser = this.userService.createUser(user);
