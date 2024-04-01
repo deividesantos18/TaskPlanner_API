@@ -2,6 +2,7 @@ package com.deividesantos.todosimple.services;
 
 import com.deividesantos.todosimple.Security.UserSpringSecurity;
 import com.deividesantos.todosimple.models.Task;
+import com.deividesantos.todosimple.models.TaskProjection;
 import com.deividesantos.todosimple.models.User;
 import com.deividesantos.todosimple.models.Enums.ProfileEnums;
 import com.deividesantos.todosimple.repositories.TaskRepository;
@@ -37,12 +38,12 @@ public class TaskService {
     }
 
 
-    public List<Task> fidAllByUserid(Long userid){
+    public List<TaskProjection> fidAllByUserid(){
         UserSpringSecurity userSpringSecurity=UserService.authenticated();
         if(Objects.isNull(userSpringSecurity))
         throw new AuthorizationException("Acesso Negado!");
 
-        List<Task> tasks= this.taskRepository.findByUser_id(userSpringSecurity.getId());
+        List<TaskProjection> tasks= this.taskRepository.findByUser_id(userSpringSecurity.getId());
         return tasks;
     }
 

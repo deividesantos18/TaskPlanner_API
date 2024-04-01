@@ -14,8 +14,7 @@ import java.util.*;
 
 @Entity
 @Table(name=User.TABLE_NAME)
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")

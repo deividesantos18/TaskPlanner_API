@@ -1,8 +1,8 @@
 package com.deividesantos.todosimple.controllers;
 
 import com.deividesantos.todosimple.models.Task;
+import com.deividesantos.todosimple.models.TaskProjection;
 import com.deividesantos.todosimple.services.TaskService;
-import com.deividesantos.todosimple.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +21,15 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/{id}")
     public ResponseEntity<Task> buscartasks(@PathVariable Long id){
         Task obj = this.taskService.findbyid(id);
         return ResponseEntity.ok(obj);
     }
 
-    @GetMapping("/user/{userid}")
-    public ResponseEntity<List<Task>> findAllByUserid(@PathVariable Long userid){
-        this.userService.findbyid(userid);
-        List<Task> obj = this.taskService.fidAllByUserid(userid);
+    @GetMapping("/user")
+    public ResponseEntity<List<TaskProjection>> findAllByUserid(){
+        List<TaskProjection> obj = this.taskService.fidAllByUserid();
         return ResponseEntity.ok().body(obj);
     }
 
