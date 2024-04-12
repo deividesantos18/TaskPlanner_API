@@ -29,6 +29,7 @@ public class SecurityConficuration {
                 .authorizeHttpRequests(authoriza->authoriza
                         .requestMatchers(HttpMethod.POST,"/user").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/auth/refresh_Token").permitAll()
                         .requestMatchers(HttpMethod.GET,"/user").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
